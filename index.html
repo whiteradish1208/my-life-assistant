@@ -72,9 +72,16 @@
             <button onclick="openTimetableEditor()" class="edit-tt-btn rounded-btn">🛠️ 編輯課表</button>
         </div>
         <div id="timetable-editor" style="display:none;" class="editor-container">
-            <textarea id="json-input" placeholder="貼上 JSON 內容" rows="4"></textarea>
-            <button onclick="applyJsonTimetable()" class="apply-btn rounded-btn">🚀 生成課表</button>
-        </div>
+    <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed #8b7355;">
+        <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第一步：複製下方指令並傳送給 AI (附上課表照片)</p>
+        <textarea id="ai-prompt" readonly style="font-size: 12px; height: 80px; background: #fdfcf8;">請幫我識別這張課表照片。請忽略不相關資訊，將課程整理成 JSON 代碼陣列格式：[{"day": 星期數字1-5, "period": 節次數字, "name": "科目名稱", "room": "教室"}]。請只回覆 JSON 代碼塊，不要說明文字。</textarea>
+        <button onclick="copyAiPrompt()" class="rounded-btn" style="background: #5ac8fa; color: white; width: 100%; margin-top: 5px; padding: 8px;">📋 一鍵複製指令</button>
+    </div>
+
+    <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第二步：將 AI 回覆的 JSON 貼在下方</p>
+    <textarea id="json-input" placeholder="貼上 AI 生成的 JSON..." rows="4"></textarea>
+    <button onclick="applyJsonTimetable()" class="apply-btn rounded-btn">🚀 生成課表</button>
+</div>
         <div id="timetable-grid" class="timetable-grid">
             </div>
     </section>
