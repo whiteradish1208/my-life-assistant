@@ -1,0 +1,151 @@
+:root {
+    --primary-blue: #007aff;
+    --apple-grey: #8e8e93;
+    --border-color: #e5e5ea;
+    --sand-bg: #d7c9b8;
+    --cream-bg: #f5f2e6;
+}
+
+body { font-family: -apple-system, sans-serif; margin: 0; background: #f2f2f7; padding-bottom: 90px; max-width: 500px; margin: 0 auto; }
+
+header { background: white; padding: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+
+.page { display: none; padding: 15px; box-sizing: border-box; }
+.page.active { display: block; }
+
+/* 統一按鈕圓潤感風格 */
+.add-btn, .rounded-btn, .nav-arrow {
+    border-radius: 12px; /* 圓潤感 */
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.add-btn:active, .rounded-btn:active { transform: scale(0.95); }
+
+.add-btn { width: 100%; background: var(--primary-blue); color: white; padding: 14px; margin-top: 10px; font-size: 16px; }
+
+/* 行事曆導航：置中且圓潤 */
+.calendar-nav { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 15px; }
+.calendar-nav h2 { margin: 0; font-size: 20px; width: 140px; text-align: center; }
+.nav-arrow { background: white; border: 1px solid var(--border-color); padding: 8px 12px; color: var(--apple-grey); }
+
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); background: white; border-radius: 12px; overflow: hidden; border: 0.5px solid var(--border-color); }
+.calendar-day { height: 80px; padding: 5px; border-right: 0.5px solid #f2f2f7; border-bottom: 0.5px solid #f2f2f7; display: flex; flex-direction: column; align-items: center; }
+.calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 12px; color: var(--apple-grey); margin-bottom: 5px; }
+
+/* 課表排版還原 */
+#timetable-page { background: var(--sand-bg); min-height: 100vh; }
+.timetable-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.timetable-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; padding: 10px; }
+.timetable-cell { background: var(--cream-bg); min-height: 95px; border-radius: 6px; display: flex; align-items: center; justify-content: center; position: relative; border: 0.5px solid rgba(139,87,40,0.1); }
+.grid-header, .grid-header-corner { background: white; text-align: center; font-weight: bold; padding: 5px 0; border-radius: 4px; }
+
+.course-text { writing-mode: vertical-lr; text-orientation: upright; font-weight: bold; font-size: 14px; letter-spacing: 2px; line-height: 1.1; }
+.room-text { position: absolute; bottom: 2px; right: 2px; font-size: 9px; color: #8b5728; background: rgba(255,255,255,0.6); padding: 1px; }
+
+/* 課表編輯器按鈕圓潤 */
+.edit-tt-btn { background: white; color: #3e3e3e; padding: 8px 15px; border: 1px solid var(--border-color); }
+.apply-btn { background: var(--primary-blue); color: white; padding: 12px; margin-top: 10px; width: 100%; }
+
+/* 金庫按鈕圓潤 */
+.withdraw-btn { background: #8b5728; color: white; padding: 0 15px; }
+
+/* 底部導航欄 */
+.bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; height: 75px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); display: flex; border-top: 1px solid var(--border-color); z-index: 9999; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--apple-grey); cursor: pointer; }
+.nav-item.active { color: var(--primary-blue); }
+/* --- 只針對輸入框與選單進行圓潤感與版面優化 --- */
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;      /* 增加內距讓文字不擁擠 */
+    border-radius: 12px;     /* 統一圓潤感，與按鈕一致 */
+    border: 1px solid var(--border-color);
+    font-size: 16px;
+    background: #f9f9fb;     /* 輕微底色增加層次感 */
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;           /* 移除預設外框 */
+}
+
+/* 當點擊輸入框時的發光效果 */
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* 針對待辦清單與金庫輸入框的行高微調 */
+.input-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;        /* 增加輸入框之間的間距 */
+}
+
+.add-section, .withdraw-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;                /* 讓輸入元件垂直排版時更有呼吸感 */
+}
+
+/* 確保金庫輸入框在手機上看起來更精緻 */
+#withdraw-reason, #withdraw-amount {
+    margin-bottom: 5px;
+}
+
+/* 僅修正課表地點位置與排版，其餘結構不變 */
+.room-text {
+    position: absolute;
+    right: 3px;                /* 靠右距離 */
+    bottom: 3px;               /* 靠下距離 */
+    writing-mode: vertical-lr; /* 垂直排版 */
+    text-orientation: upright; /* 字體正立 */
+    font-size: 9px;
+    color: #8b5728;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1px 2px;
+    border-radius: 2px;
+    line-height: 1;
+    z-index: 5;
+    pointer-events: none;      /* 確保不會干擾點擊 */
+}
+
+/* --- 精準修復：勾選圓圈與完成後的灰色刪除線效果 --- */
+
+/* 1. 勾選圓圈基礎樣式 */
+.checkbox {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--apple-light-grey, #c7c7cc); /* 預設灰色邊框 */
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* 2. 當項目被標記為完成時 (todo-item.completed) */
+.todo-item.completed .checkbox {
+    background-color: var(--apple-grey, #8e8e93) !important; /* 圓圈變實心灰 */
+    border-color: var(--apple-grey, #8e8e93) !important;
+    box-shadow: inset 0 0 0 4px white; /* 內縮白色小圓點，模仿 Apple Checkbox */
+}
+
+/* 3. 完成後的文字效果：灰色、刪除線、透明度降低 */
+.todo-item.completed strong {
+    color: var(--apple-grey, #8e8e93) !important;
+    text-decoration: line-through !important; /* 刪除線 */
+    opacity: 0.6;
+}
+
+.todo-item.completed .todo-info small {
+    text-decoration: line-through !important;
+    opacity: 0.5;
+}
+
+/* 確保點擊區塊時文字變灰與勾選圓圈同步發生 */
+.todo-item.completed {
+    background-color: rgba(242, 242, 247, 0.5); /* 完成後底色微淡 */
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>個人數位助手</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1 id="page-title">待辦清單</h1>
+    <div class="balance-display">💰 <span id="header-balance">0</span></div>
+</header>
+
+<main id="content">
+    <section id="todo-page" class="page active">
+        <div class="add-section">
+            <input type="text" id="todo-text" placeholder="任務名稱...">
+            <div class="input-row">
+    <select id="todo-type" onchange="toggleExtraFields()">
+        <option value="task">重要任務</option>
+        <option value="routine">例行公事</option>
+    </select>
+    <input type="date" id="todo-date">
+</div>
+
+<div id="routine-extra-fields" style="display:none;">
+    <div class="input-row">
+        <input type="time" id="start-time">
+        <select id="frequency">
+            <option value="1">每一天</option>
+            <option value="2">每兩天</option>
+            <option value="7">每週</option>
+            <option value="14">每兩週</option>
+            <option value="30">每月</option>
+            <option value="182">每半年</option>
+            <option value="365">每年</option>
+        </select>
+    </div>
+</div>
+<div class="input-row">
+    <input type="number" id="reward-amt" placeholder="獎金 $">
+    <input type="number" id="penalty-amt" placeholder="罰金 $">
+</div>
+            <button onclick="addNewItem()" class="add-btn">新增任務</button>
+        </div>
+        <div class="list-container">
+            <h3>重要任務</h3>
+            <ul id="task-list"></ul>
+            <hr style="border:0.5px solid #eee; margin:15px 0;">
+            <h3>每日例行</h3>
+            <ul id="routine-list"></ul>
+        </div>
+    </section>
+
+    <section id="calendar-page" class="page">
+        <div class="calendar-nav">
+            <button onclick="changeMonth(-1)" class="nav-arrow">◀</button>
+            <h2 id="month-year-display">2026年 4月</h2>
+            <button onclick="changeMonth(1)" class="nav-arrow">▶</button>
+        </div>
+        <div class="calendar-weekdays">
+            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+        </div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+    </section>
+
+    <section id="timetable-page" class="page">
+        <div class="timetable-header">
+            <h3>My Timetable</h3>
+            <button onclick="openTimetableEditor()" class="edit-tt-btn rounded-btn">🛠️ 編輯課表</button>
+        </div>
+        <div id="timetable-editor" style="display:none;" class="editor-container">
+            <textarea id="json-input" placeholder="貼上 JSON 內容" rows="4"></textarea>
+            <button onclick="applyJsonTimetable()" class="apply-btn rounded-btn">🚀 生成課表</button>
+        </div>
+        <div id="timetable-grid" class="timetable-grid">
+            </div>
+    </section>
+
+    <section id="vault-page" class="page">
+        <div class="vault-header">
+            <div class="total-stats">
+                <small>當前總資產</small>
+                <h2 id="vault-balance">💰 0</h2>
+            </div>
+            <div class="withdraw-box">
+                <input type="text" id="withdraw-reason" placeholder="用途">
+                <div class="input-row">
+                    <input type="number" id="withdraw-amount" placeholder="金額">
+                    <button onclick="withdrawMoney()" class="withdraw-btn rounded-btn">確認領取</button>
+                </div>
+            </div>
+        </div>
+        <div class="history-section">
+            <h3>收支明細</h3>
+            <ul id="history-list" class="history-list"></ul>
+        </div>
+    </section>
+</main>
+
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="showPage('todo', '待辦清單', this)">📝<span>待辦</span></div>
+    <div class="nav-item" onclick="showPage('calendar', '行事曆', this)">📅<span>日曆</span></div>
+    <div class="nav-item" onclick="showPage('timetable', '我的課表', this)">🏫<span>課表</span></div>
+    <div class="nav-item" onclick="showPage('vault', '小金庫', this)">💰<span>金庫</span></div>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>
