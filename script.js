@@ -30,6 +30,7 @@ function saveAndRender() {
 function renderTodoList() {
     const tList = document.getElementById('task-list');
     const rList = document.getElementById('routine-list');
+    if(!tList || !rList) return;
     tList.innerHTML = ''; rList.innerHTML = '';
     todos.forEach(item => {
         const li = document.createElement('li');
@@ -64,22 +65,15 @@ function addNewItem() {
     document.getElementById('todo-text').value = '';
 }
 
-// 在 addNewItem 函式下方加入這個：
-
 function toggleExtraFields() {
     const type = document.getElementById('todo-type').value;
     const routineFields = document.getElementById('routine-extra-fields');
     const taskDate = document.getElementById('todo-date');
-
-    // 檢查元素是否存在，避免報錯
     if (!routineFields || !taskDate) return;
-
     if (type === 'routine') {
-        // 選「例行公事」：顯示週期選單，隱藏日期選擇
         routineFields.style.display = 'block';
         taskDate.style.display = 'none';
     } else {
-        // 選「重要任務」：隱藏週期選單，顯示日期選擇
         routineFields.style.display = 'none';
         taskDate.style.display = 'block';
     }
@@ -89,14 +83,13 @@ function toggleExtraFields() {
 function renderCalendar() {
     const grid = document.getElementById('calendar-grid');
     const display = document.getElementById('month-year-display');
+    if(!grid) return;
     grid.innerHTML = '';
     const y = currentViewDate.getFullYear();
     const m = currentViewDate.getMonth();
     display.innerText = `${y}年 ${m + 1}月`;
-
     const firstDay = new Date(y, m, 1).getDay();
     const lastDate = new Date(y, m + 1, 0).getDate();
-
     for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
     for (let d = 1; d <= lastDate; d++) {
         const dayEl = document.createElement('div');
@@ -112,15 +105,15 @@ function changeMonth(offset) {
     renderCalendar();
 }
 
-// --- 課表功能 (還原結構) ---
+// --- 課表功能 ---
 function toFullWidth(str) {
     return str.replace(/[!-~]/g, s => String.fromCharCode(s.charCodeAt(0) + 0xfee0));
 }
 
 function renderDynamicTimetable() {
     const grid = document.getElementById('timetable-grid');
+    if(!grid) return;
     grid.innerHTML = '<div class="grid-header-corner"></div><div class="grid-header">一</div><div class="grid-header">二</div><div class="grid-header">三</div><div class="grid-header">四</div><div class="grid-header">五</div>';
-
     for (let p = 1; p <= 8; p++) {
         const tCell = document.createElement('div'); tCell.className = 'timetable-cell'; tCell.innerText = p; grid.appendChild(tCell);
         for (let d = 1; d <= 5; d++) {
@@ -134,21 +127,30 @@ function renderDynamicTimetable() {
 
 function openTimetableEditor() {
     const ed = document.getElementById('timetable-editor');
-    ed.style.display = ed.style.display === 'none' ? 'block' : 'none';
+    if (ed) {
+        ed.style.display = (ed.style.display === 'none' || ed.style.display === '') ? 'block' : 'none';
+    }
 }
 
 function applyJsonTimetable() {
+    const jsonInput = document.getElementById('json-input');
     try {
-        myTimetableData = JSON.parse(document.getElementById('json-input').value);
+        const rawData = jsonInput.value;
+        if (!rawData) return alert("請貼上 JSON 內容");
+        myTimetableData = JSON.parse(rawData);
         localStorage.setItem('my_assistant_timetable', JSON.stringify(myTimetableData));
         renderDynamicTimetable();
         document.getElementById('timetable-editor').style.display = 'none';
-    } catch(e) { alert("格式錯誤"); }
+        alert("課表生成成功！");
+    } catch (e) {
+        alert("JSON 格式錯誤");
+    }
 }
 
 // --- 金庫功能 ---
 function renderHistoryList() {
     const list = document.getElementById('history-list');
+    if(!list) return;
     list.innerHTML = history.map(h => `
         <li class="history-item">
             <div><strong>${h.name}</strong><small style="display:block;color:#999">${h.date}</small></div>
@@ -162,34 +164,42 @@ function withdrawMoney() {
     const reasonInput = document.getElementById('withdraw-reason');
     const amt = parseInt(amtInput.value);
     const reason = reasonInput.value || "未註明用途";
-
-    // 檢查金額是否合法且餘額充足
-    if (isNaN(amt) || amt <= 0) {
-        alert("請輸入有效的金額");
-        return;
-    }
-    if (amt > balance) {
-        alert("餘額不足");
-        return;
-    }
-
-    // 1. 更新餘額
+    if (isNaN(amt) || amt <= 0 || amt > balance) return alert("金額無效或餘額不足");
     balance -= amt;
-
-    // 2. 將領取紀錄加入歷史明細（unshift 會加到最上面）
-    history.unshift({ 
-        name: "領取：" + reason, 
-        amt: -amt, 
-        date: new Date().toLocaleString() 
-    });
-
-    // 3. 儲存數據並刷新介面
+    history.unshift({ name: "領取：" + reason, amt: -amt, date: new Date().toLocaleString() });
     saveAndRender();
-    renderHistoryList(); // 強制更新金庫頁面的明細列表
-
-    // 4. 清空輸入框
-    amtInput.value = '';
-    reasonInput.value = '';
+    renderHistoryList();
+    amtInput.value = ''; reasonInput.value = '';
 }
 
 window.onload = saveAndRender;
+
+// --- 【關鍵修正】強制將函式掛載到全域 window 物件 ---
+// 這樣無論編譯器如何封裝，HTML 的 onclick 都一定找得到它們
+window.openTimetableEditor = openTimetableEditor;
+window.applyJsonTimetable = applyJsonTimetable;
+window.showPage = showPage;
+window.changeMonth = changeMonth;
+window.addNewItem = addNewItem;
+window.toggleExtraFields = toggleExtraFields;
+window.withdrawMoney = withdrawMoney;
+window.toggleComplete = toggleComplete;
+
+// 新增：一鍵複製指令功能
+function copyAiPrompt() {
+    const promptText = document.getElementById('ai-prompt');
+    promptText.select();
+    promptText.setSelectionRange(0, 99999); // 針對手機端
+    
+    try {
+        navigator.clipboard.writeText(promptText.value);
+        alert("指令已複製！請去傳給 AI 並附上照片。");
+    } catch (err) {
+        // 備用方案：如果瀏覽器不支援 clipboard API
+        document.execCommand('copy');
+        alert("指令已複製！");
+    }
+}
+
+// 確保全域掛載，讓 HTML 點擊生效
+window.copyAiPrompt = copyAiPrompt;
