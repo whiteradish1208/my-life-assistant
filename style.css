@@ -245,3 +245,61 @@ input[type="date"], input[type="time"] {
     padding: 10px !important;
     font-size: 16px; /* 防止 iOS 自動放大畫面 */
 }
+
+/* 1. 移除清單預設黑點 */
+#task-list, #routine-list, #completed-this-week-list {
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 2. 統一輸入框與下拉選單樣式 */
+select, input[type="date"], input[type="time"], input[type="number"], input[type="text"] {
+    -webkit-appearance: none;  /* 徹底移除 iOS 預設藍色與樣式 */
+    -moz-appearance: none;
+    appearance: none;
+    
+    background-color: #f9f9fb !important;
+    color: #000000 !important; /* 強制黑色文字 */
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-size: 16px;
+    height: 48px;
+    box-sizing: border-box;
+    opacity: 1 !important;
+}
+
+/* 3. 手動加回下拉箭頭 (解決箭頭不見的問題) */
+select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+    padding-right: 30px !important; /* 給箭頭留位置 */
+}
+
+/* 4. 解決格子不夠長、平分空間的問題 */
+.input-row {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 8px;
+}
+
+.input-row > * {
+    flex: 1 !important; /* 強制各佔 50% */
+    min-width: 0 !important;
+}
+
+/* 5. 修正勾選圓圈排版 */
+.todo-item div[onclick] {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.checkbox {
+    flex-shrink: 0; /* 防止圓圈被壓扁 */
+}
+
