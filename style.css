@@ -299,6 +299,46 @@ select {
     width: 100%;
 }
 
+/* 針對日期與時間框的專屬修正 */
+input[type="date"], 
+input[type="time"] {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 48px !important;    /* 強制固定高度，防止空白時塌陷 */
+    min-height: 48px !important;
+    white-space: nowrap !important; /* 強制不換行 */
+    overflow: hidden;
+    font-size: 14px !important;  /* 稍微縮小字體，確保在小螢幕不換行 */
+    color: #000000 !important;
+    padding: 0 8px !important;
+    -webkit-appearance: none;
+    text-align: center;
+}
+
+/* 解決 iOS 在沒選日期時看起來是空的小技巧 */
+input[type="date"]:invalid::before,
+input[type="date"][value=""]::before {
+    content: "選擇日期"; /* 在沒選時顯示提示字 */
+    color: #8e8e93;
+    width: 100%;
+}
+
+/* 確保 input-row 的排版穩固 */
+.input-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* 絕對不准換行 */
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-row > * {
+    flex: 1 1 50% !important; /* 兩格平分 50% */
+    min-width: 0 !important;  /* 允許內容縮小而不撐開 */
+}
+
 .checkbox {
     flex-shrink: 0; /* 防止圓圈被壓扁 */
 }
