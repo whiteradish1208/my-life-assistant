@@ -217,3 +217,31 @@ input[type="date"]::before {
     padding: 10px 0;
     border-bottom: 1px solid #f2f2f7;
 }
+
+/* 讓輸入列強制平分 */
+.input-row {
+    display: flex !important;
+    width: 100% !important;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* 強制讓左邊的 select 與右邊的 date/time 框平起平坐 */
+#todo-type, #todo-date, #start-time, #frequency, #reward-amt, #penalty-amt {
+    flex: 1 !important;
+    width: 50% !important; /* 強制各佔一半 */
+    min-width: 0; /* 防止溢出 */
+    box-sizing: border-box;
+    height: 45px; /* 統一高度 */
+    -webkit-appearance: none; /* 移除 iOS 內建陰影 */
+    background-color: #f9f9fb;
+}
+
+/* 針對 iOS 的時間與日期框加強顯示 */
+input[type="date"], input[type="time"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 10px !important;
+    font-size: 16px; /* 防止 iOS 自動放大畫面 */
+}
