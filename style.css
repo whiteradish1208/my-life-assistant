@@ -149,3 +149,28 @@ input:focus, select:focus, textarea:focus {
 .todo-item.completed {
     background-color: rgba(242, 242, 247, 0.5); /* 完成後底色微淡 */
 }
+
+/* 修正手機端日期與時間輸入框不顯示的問題 */
+input[type="date"], 
+input[type="time"] {
+    min-height: 44px; /* 確保有足夠點擊高度 */
+    -webkit-appearance: none; /* 移除 iOS 預設樣式影響 */
+    appearance: none;
+    display: flex;
+    align-items: center;
+    background-color: #f9f9fb;
+}
+
+/* 確保輸入列中的格子平均分配寬度 */
+.input-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.input-row input, 
+.input-row select {
+    flex: 1; /* 強制讓兩個框框平分空間，不會縮成一團 */
+    min-width: 0; /* 防止 Flex 項目溢出 */
+}
