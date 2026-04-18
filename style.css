@@ -202,3 +202,18 @@ input[type="date"]::before {
     gap: 8px;
     width: 100%;
 }
+
+/* 移除預設黑點 */
+#task-list, #routine-list, #completed-this-week-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 確保 todo-item 內部排版正確 */
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f2f2f7;
+}
