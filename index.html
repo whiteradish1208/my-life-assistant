@@ -18,39 +18,44 @@
         <div class="add-section">
             <input type="text" id="todo-text" placeholder="任務名稱...">
             <div class="input-row">
-    <select id="todo-type" onchange="toggleExtraFields()">
-        <option value="task">重要任務</option>
-        <option value="routine">例行公事</option>
-    </select>
-    <input type="date" id="todo-date">
-</div>
+                <select id="todo-type" onchange="toggleExtraFields()">
+                    <option value="task">重要任務</option>
+                    <option value="routine">例行公事</option>
+                </select>
+                <input type="date" id="todo-date">
+            </div>
 
-<div id="routine-extra-fields" style="display:none;">
-    <div class="input-row">
-        <input type="time" id="start-time">
-        <select id="frequency">
-            <option value="1">每一天</option>
-            <option value="2">每兩天</option>
-            <option value="7">每週</option>
-            <option value="14">每兩週</option>
-            <option value="30">每月</option>
-            <option value="182">每半年</option>
-            <option value="365">每年</option>
-        </select>
-    </div>
-</div>
-<div class="input-row">
-    <input type="number" id="reward-amt" placeholder="獎金 $">
-    <input type="number" id="penalty-amt" placeholder="罰金 $">
-</div>
+            <div id="routine-extra-fields" style="display:none;">
+                <div class="input-row">
+                    <input type="time" id="start-time">
+                    <select id="frequency">
+                        <option value="1">每一天</option>
+                        <option value="2">每兩天</option>
+                        <option value="7">每週</option>
+                        <option value="14">每兩週</option>
+                        <option value="30">每月</option>
+                        <option value="182">每半年</option>
+                        <option value="365">每年</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-row">
+                <input type="number" id="reward-amt" placeholder="獎金 $">
+                <input type="number" id="penalty-amt" placeholder="罰金 $">
+            </div>
             <button onclick="addNewItem()" class="add-btn">新增任務</button>
         </div>
+        
         <div class="list-container">
             <h3>重要任務</h3>
             <ul id="task-list"></ul>
             <hr style="border:0.5px solid #eee; margin:15px 0;">
             <h3>每日例行</h3>
             <ul id="routine-list"></ul>
+            
+            <hr style="border:0.5px solid #eee; margin:15px 0;">
+            <h3>本週已完成</h3>
+            <ul id="completed-this-week-list"></ul>
         </div>
     </section>
 
@@ -72,18 +77,17 @@
             <button onclick="openTimetableEditor()" class="edit-tt-btn rounded-btn">🛠️ 編輯課表</button>
         </div>
         <div id="timetable-editor" style="display:none;" class="editor-container">
-    <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed #8b7355;">
-        <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第一步：複製下方指令並傳送給 AI (附上課表照片)</p>
-        <textarea id="ai-prompt" readonly style="font-size: 12px; height: 80px; background: #fdfcf8;">請幫我識別這張課表照片。請忽略不相關資訊，將課程整理成 JSON 代碼陣列格式：[{"day": 星期數字1-5, "period": 節次數字, "name": "科目名稱", "room": "教室"}]。請只回覆 JSON 代碼塊，不要說明文字。</textarea>
-        <button onclick="copyAiPrompt()" class="rounded-btn" style="background: #5ac8fa; color: white; width: 100%; margin-top: 5px; padding: 8px;">📋 一鍵複製指令</button>
-    </div>
-
-    <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第二步：將 AI 回覆的 JSON 貼在下方</p>
-    <textarea id="json-input" placeholder="貼上 AI 生成的 JSON..." rows="4"></textarea>
-    <button onclick="applyJsonTimetable()" class="apply-btn rounded-btn">🚀 生成課表</button>
-</div>
-        <div id="timetable-grid" class="timetable-grid">
+            <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed #8b7355;">
+                <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第一步：複製下方指令並傳送給 AI (附上課表照片)</p>
+                <textarea id="ai-prompt" readonly style="font-size: 12px; height: 80px; background: #fdfcf8;">請幫我識別這張課表照片。請忽略不相關資訊，將課程整理成 JSON 代碼陣列格式：[{"day": 星期數字1-5, "period": 節次數字, "name": "科目名稱", "room": "教室"}]。請只回覆 JSON 代碼塊，不要說明文字。</textarea>
+                <button onclick="copyAiPrompt()" class="rounded-btn" style="background: #5ac8fa; color: white; width: 100%; margin-top: 5px; padding: 8px;">📋 一鍵複製指令</button>
             </div>
+
+            <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第二步：將 AI 回覆的 JSON 貼在下方</p>
+            <textarea id="json-input" placeholder="貼上 AI 生成的 JSON..." rows="4"></textarea>
+            <button onclick="applyJsonTimetable()" class="apply-btn rounded-btn">🚀 生成課表</button>
+        </div>
+        <div id="timetable-grid" class="timetable-grid"></div>
     </section>
 
     <section id="vault-page" class="page">
