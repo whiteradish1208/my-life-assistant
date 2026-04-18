@@ -174,3 +174,31 @@ input[type="time"] {
     flex: 1; /* 強制讓兩個框框平分空間，不會縮成一團 */
     min-width: 0; /* 防止 Flex 項目溢出 */
 }
+
+/* 強制讓日期與時間框在手機上現形 */
+input[type="date"], 
+input[type="time"] {
+    position: relative;
+    min-width: 140px;          /* 強制給予最小寬度 */
+    min-height: 45px;          /* 確保高度與旁邊的下拉選單一致 */
+    flex: 1;                   /* 在 flex 佈局中主動填滿空間 */
+    background-color: #ffffff; 
+    border: 1px solid var(--border-color);
+    -webkit-appearance: listbox; /* 強制 iOS 使用列表框樣式渲染，這是關鍵 */
+    display: block !important;
+}
+
+/* 針對 iOS Date Input 的內容強制顯示 */
+input[type="date"]::before {
+    content: attr(placeholder); /* 沒選日期時嘗試顯示 */
+    width: 100%;
+    color: #999;
+}
+
+/* 確保父層容器不會壓縮到子元素 */
+.input-row {
+    display: flex !important;
+    flex-wrap: nowrap !important; /* 不准換行 */
+    gap: 8px;
+    width: 100%;
+}
