@@ -174,12 +174,13 @@ function toggleExtraFields() {
     const type = document.getElementById('todo-type').value;
     const routineFields = document.getElementById('routine-extra-fields');
     const taskDate = document.getElementById('todo-date');
+    
     if (type === 'routine') {
-        routineFields.style.display = 'block';
-        taskDate.style.display = 'none';
+        routineFields.style.display = 'block'; // 顯示例行公事的「時間」與「頻率」
+        taskDate.style.display = 'none';      // 隱藏重要任務的「日期」
     } else {
-        routineFields.style.display = 'none';
-        taskDate.style.display = 'block';
+        routineFields.style.display = 'none';  // 隱藏例行公事欄位
+        taskDate.style.display = 'block';     // 顯示重要任務的「日期」
     }
 }
 
