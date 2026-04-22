@@ -203,3 +203,28 @@ input[type="time"] {
     flex: 1; /* 強制讓兩個框框平分空間，不會縮成一團 */
     min-width: 0; /* 防止 Flex 項目溢出 */
 }
+
+/* 確保日期框看起來不像按鈕，而是像個輸入框 */
+input[type="date"], 
+input[type="time"] {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 48px !important;
+    background-color: #f9f9fb !important;
+    color: #000000 !important;
+    font-size: 14px !important; /* 縮小字體防止擠壓換行 */
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0 4px !important; /* 減少內距，留更多空間給文字 */
+    text-align: center;
+    width: 100% !important;
+}
+
+/* 確保父層容器寬度足夠 */
+.input-row > * {
+    flex: 1 1 50% !important;
+    max-width: 50% !important; /* 強制不准超過一半 */
+}
