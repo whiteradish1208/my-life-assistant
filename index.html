@@ -79,7 +79,19 @@
         <div id="timetable-editor" style="display:none;" class="editor-container">
             <div style="background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed #8b7355;">
                 <p style="font-size: 13px; color: #555; margin-bottom: 8px;">第一步：複製下方指令並傳送給 AI (附上課表照片)</p>
-                <textarea id="ai-prompt" readonly style="font-size: 12px; height: 80px; background: #fdfcf8;">請幫我識別這張課表照片。請忽略不相關資訊，將課程整理成 JSON 代碼陣列格式：[{"day": 星期數字1-5, "period": 節次數字, "name": "科目名稱", "room": "教室"}]。請只回覆 JSON 代碼塊，不要說明文字。</textarea>
+                <textarea id="ai-prompt" readonly style="font-size: 12px; height: 80px; background: #fdfcf8;">「請識別這張課表照片，忽略不相關資訊。
+
+輸出規則（嚴格執行）：
+
+將課程整理成 JSON 陣列格式：[{"day": 星期數字1-5, "period": 節次數字, "name": "科目名稱", "room": "教室"}]。
+
+關鍵要求：若沒有教室資訊，room 欄位請務必填寫空字串 ""，絕對禁止使用 null。
+
+格式完整性：確保代碼以 [ 開始並以 ] 結尾，中間不要有任何 Markdown 標籤（如 ```json）或解釋文字。
+
+最後一個項目後面不可以有逗號。
+
+請直接輸出代碼。」</textarea>
                 <button onclick="copyAiPrompt()" class="rounded-btn" style="background: #5ac8fa; color: white; width: 100%; margin-top: 5px; padding: 8px;">📋 一鍵複製指令</button>
             </div>
 
